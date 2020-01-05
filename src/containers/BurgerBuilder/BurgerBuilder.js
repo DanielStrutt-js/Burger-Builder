@@ -98,29 +98,45 @@ class BurgerBuilder extends Component{
     }
 
     purchaseContinueHandler = () => {
-        //alert('You continue!');
-        this.setState({loading: true});
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'daniel strutt',
-                address: {
-                    street: 'paper street',
-                    zipCode: '75015',
-                    country: 'France',
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
-        }
-        //Post order to firebase
-        axios.post('/orders.json', order)
-             //once sent close modal and loading spinner
-            .then(response => {this.setState({loading: false, purchasing: false})
-        })
-            //if error close modal and loading spinner
-            .catch(error => {this.setState({loading: false, purchasing: false});
+    //     //alert('You continue!');
+    //     this.setState({loading: true});
+    //     const order = {
+    //         ingredients: this.state.ingredients,
+    //         price: this.state.totalPrice,
+    //         customer: {
+    //             name: 'daniel strutt',
+    //             address: {
+    //                 street: 'paper street',
+    //                 zipCode: '75015',
+    //                 country: 'France',
+    //             },
+    //             email: 'test@test.com'
+    //         },
+    //         deliveryMethod: 'fastest'
+    //     }
+    //     //Post order to firebase
+    //     axios.post('/orders.json', order)
+    //          //once sent close modal and loading spinner
+    //         .then(response => {this.setState({loading: false, purchasing: false})
+    //     })
+    //         //if error close modal and loading spinner
+    //         .catch(error => {this.setState({loading: false, purchasing: false});
+    // });
+
+    //loops through ingredients, turnes each ingredient into a string then pushes them into queryParams array
+    const queryParams = [];
+    for (let i in this.state.ingredients){
+        queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+    }
+    queryParams.push('price=' + this.state.totalPrice)
+    //console.log(queryParams)
+    //joings each string in queryParams together 
+    const queryString = queryParams.join('&');
+    //console.log( queryString)
+    //takes queryString and adds it to path
+    this.props.history.push({
+        pathname: '/checkout',
+        search: '?'+ queryString
     });
 
     }

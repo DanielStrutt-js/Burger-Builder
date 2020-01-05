@@ -18,8 +18,9 @@ const errorHandler = (WrappedComponent, axios) => {
             });
         }
 
+        //when BurgerBuilder component is not in use this cleans up interceptors
         componentWillUnmount () {
-            console.log('will unmount', this.reqInterceptor, this.resInterceptor)
+            //console.log('will unmount', this.reqInterceptor, this.resInterceptor)
             axios.interceptors.request.eject(this.reqInterceptor);
             axios.interceptors.request.eject(this.resInterceptor);
         }
